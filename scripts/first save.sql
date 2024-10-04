@@ -115,6 +115,35 @@ FROM data_analyst_jobs;
 
 -- 12. How many different job titles do not contain either the word ‘Analyst’ or the word ‘Analytics’? What word do these positions have in common?
 
-SELECT title
-FROM data_analyst_jobs
-WHERE title NOT LIKE '%Anal___%' AND title NOT LIKE '%Analy___%' AND title IS NOT NULL;
+-- SELECT title
+-- FROM data_analyst_jobs
+-- WHERE title NOT ILIKE '%analyst%' AND title NOT ILIKE '%analytics%' AND title IS NOT NULL;
+
+-- SELECT title
+-- FROM data_analyst_jobs
+-- WHERE title NOT LIKE '%Analyst%' AND title NOT LIKE '%ANALYST%' AND title NOT LIKE '%analyst%' AND title NOT LIKE '%analytics%' AND title NOT LIKE '%ANALYTICS%' AND title NOT LIKE '%Analytics%';
+
+-- SELECT title 
+-- FROM data_analyst_jobs
+-- WHERE to_tsvector(title) @@ to_tsquery('!anal%:*');
+
+-- Answer: There are 4 different job titles that do not contain the word "Analyst" or "Analytics". The word these positions have in common is "Tableau".
+
+--- BONUS: You want to understand which jobs requiring SQL are hard to fill. Find the number of jobs by industry (domain) that require SQL and have been posted longer than 3 weeks.
+    -- Disregard any postings where the domain is NULL.
+    -- Order your results so that the domain with the greatest number of hard to fill jobs is at the top.
+    -- Which three industries are in the top 3 on this list? How many jobs have been listed for more than 3 weeks for each of the top 3?
+
+-- Select domain AS industry, COUNT(skill) AS SQL_req_jobs, MAX(days_since_posting) AS post_age
+-- FROM data_analyst_jobs
+-- WHERE skill ILIKE '%sql%' AND domain IS NOT NULL AND days_since_posting > 21
+-- GROUP BY domain
+-- ORDER BY SQL_req_jobs DESC, post_age DESC;
+
+-- Select COUNT(*) AS num_jobs, domain AS industry, MAX(days_since_posting) AS post_age
+-- FROM data_analyst_jobs
+-- WHERE skill ILIKE '%sql%' AND domain IS NOT NULL AND days_since_posting > 21
+-- GROUP BY domain
+-- ORDER BY num_jobs DESC, post_age DESC;
+
+-- Answer: Internet and Software is #1 industry with 62 jobs at 30 days of post age. Banks and Financial Services is the #2 industry with 61 jobs at 30 days of post age. Consulting and Business Services is #3 industry with 57 jobs at 30 days of post age. 
